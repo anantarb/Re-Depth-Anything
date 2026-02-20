@@ -1,0 +1,59 @@
+device: cuda
+max_steps: 1000
+ensemble_size: 10
+dtype: torch.float32
+
+guidance:
+  type: stable_diffusion
+  max_steps: ${max_steps}
+  device: ${device}
+  pretrained_model_name_or_path: runwayml/stable-diffusion-v1-5
+  half_precision_weights: true
+  scheduler: ddim
+  guidance_scale: 50.0
+  weighting_strategy: uniform
+  min_step_percent: 0.02
+  max_step_percent: 0.60
+  
+training:
+  embeddings_lr: 1e-3
+  dpt_lr: 2e-6
+  scale_lr: 1e-3
+  smoothness_weight: 1.0
+
+depth_model:
+  pred_space: disparity
+  scale: 7
+  ms: 0.1
+  encoder: vits
+  checkpoint_path: pretrained_models/depth_anything_v2_vits.pth
+
+renderer:
+  device: ${device}
+  dtype: ${dtype}
+  view_d:
+    - 0.0
+    - 0.0
+    - 1.0
+  light_d_min: -1.0
+  light_d_max: 1.0
+  shininess_exp_min: 2
+  shininess_exp_max: 8
+
+logging:
+  save_dir: ./redepth_exps
+  save_interval: ${max_steps}
+  save_as_grid: True
+  save_model: False
+
+data:
+  image_path: example_data/tiger.png
+  depth_path: null
+  depth_min_value: null
+  depth_max_value: null
+  mask: null
+  depth_mask: null
+  depth_to_meters: 1000.0
+  width: 518
+  height: 518
+  resize_method: upper_bound
