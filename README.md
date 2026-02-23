@@ -1,18 +1,21 @@
-# Re-Depth Anything: Test-Time Depth Refinement via Self-Supervised Re-lighting
+# Re-Depth Anything: Test-Time Depth Refinement via Self-Supervised Re-lighting (CVPR'26 Findings)
 
 <p align="center"><img src="./assets/teaser.gif" alt="animated"/></p>
 
 Re-Depth refines the prediction of the monocular depth estimators via novel, self-supervised re-lighting method.
 
-This is the official repository that contains source code for the arXiv paper [Re-Depth Anything](https://arxiv.org/pdf/2512.17908).
+This is the official repository that contains source code for the arXiv paper [Re-Depth Anything](https://arxiv.org/abs/2512.17908).
+
+[[Paper](https://arxiv.org/pdf/2512.17908)] [[Project Page](https://anantarb.github.io/redepth)]
 
 If you find Re-Depth Anything useful for your work please cite:
 ```
 @article{bhattarai2025redepth,
       title={Re-Depth Anything: Test-Time Depth Refinement via Self-Supervised Re-lighting},
-      author={Bhattarai, Ananta R. and Rhodin, Helge},
+      author={Ananta R. Bhattarai and Helge Rhodin},
       journal={ArXiv},
-      year={2025}
+      year={2025},
+      volume={abs/2512.17908}
 }
 ```
 
