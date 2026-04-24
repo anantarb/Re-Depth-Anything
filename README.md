@@ -10,17 +10,17 @@ This is the official repository that contains source code for the arXiv paper [R
 
 If you find Re-Depth Anything useful for your work please cite:
 ```
-@article{bhattarai2025redepth,
+@inproceedings{bhattarai2026redepth,
       title={Re-Depth Anything: Test-Time Depth Refinement via Self-Supervised Re-lighting},
       author={Ananta R. Bhattarai and Helge Rhodin},
-      journal={ArXiv},
-      year={2025},
-      volume={abs/2512.17908}
+      booktitle={Conference on Computer Vision and Pattern Recognition- FINDINGS Track (CVPRF)},
+      year={2026}
 }
 ```
 
 ## News
 
+* **21.04.2026**: Re-Depth Anything is integrated with DA3MONO-LARGE. :tada: 
 * **15.02.2026**: Code for Re-Depth Anything is released. :fire:
 
 
@@ -32,8 +32,11 @@ If you find Re-Depth Anything useful for your work please cite:
 git clone https://github.com/anantarb/Re-Depth-Anything.git
 cd Re-Depth-Anything/
 source ./scripts/install_deps.sh
-sh ./scripts/prepare_DAv2_small.sh
 ```
+To prepare Depth Anything V2, run `sh ./scripts/prepare_DAv2_small.sh`
+
+To prepare Depth Anything 3 Mono, run `sh ./scripts/prepare_DA3_mono-large.sh`
+
 The first script creates the `redepth` conda environment and installs all necessary packages. The second script downloads the pre-trained models and supporting modules, and places them into the appropriate folders.
 
 This project was developed and tested on **Ubuntu 24.04**, **CUDA 12.8**, and **Python 3.12**. If you are using a different OS, CUDA version, or Python version, you may need to make additional adjustments to get the environment working. 
@@ -44,7 +47,7 @@ If you run into dependency issues, you can refer to `requirements_dev.txt`, whic
 
 ### Preparing the config
 
-We provide an example config at [`redepth/config/DAv2small_example.yaml`](redepth/config/DAv2small_example.yaml). To run Re-Depth on your own image, make the following changes:
+We provide an example config at [`redepth/config/DAv2small_example.yaml`](redepth/config/DAv2small_example.yaml) and [`redepth/config/DA3mono-large_example.yaml`](redepth/config/DA3mono-large_example.yaml). To run Re-Depth on your own image, make the following changes:
 
 - **`image_path`**: Set this to the path of your input image.
 - **`depth_path`** *(optional)*: Set this to the path of your ground-truth (GT) depth map, if available. When provided, the output will be compared against GT **both qualitatively and quantitatively**, and the results will be saved in the logging directory.
@@ -65,6 +68,10 @@ The items above are the minimum changes needed to run Re-Depth on your own image
 After configuring your setup, run the optimization script:
 ```bash
 python redepth/scripts/run_redepth_DAv2.py --config=PATH_TO_CONFIG
+```
+OR
+```bash
+python redepth/scripts/run_redepth_DA3mono-large.py --config=PATH_TO_CONFIG
 ```
 
 #### Output directory + naming conventions
@@ -99,11 +106,10 @@ where:
 
 ## Applying Re-Depth to Other Models
 
-- **Re-Depth Anything** can be used with other backbone models (e.g., **Depth-Anything-V2-Giant**, **DA3MONO-LARGE**). To do this, create a model-specific coach/trainer class (see `redepth/coach/DAv2_coach.py`) that **inherits** from the base coach at `redepth/coach/base_coach.py`.
+- **Re-Depth Anything** can be used with other backbone models. To do this, create a model-specific coach/trainer class (see `redepth/coach/DAv2_coach.py` and `redepth/coach/DA3_monolarge_coach.py`) that **inherits** from the base coach at `redepth/coach/base_coach.py`.
 - The base coach expects the derived class to provide the required **attributes** (e.g., `Dataset`, `Model`, `Optimizer`) and to implement the required **methods** (listed under `@abstractmethod`) so the optimization can be launched.
 - Keep in mind that different base models output **depth/disparity in different value ranges**. As a result, the configuration values for `scale` and `ms` may need to be **significantly different** across models. Since Re-Depth relies on the **scaled depth** computed from these parameters, getting good estimates for `scale` and `ms` is important for best performance.
 - Other hyperparameters can also strongly affect results, including `smoothness_weight`, `embeddings_lr`, `dpt_lr`, and `scale_lr`.
-- We plan to expand the codebase to support more base models in the future.
 
 
 ## Acknowledgements
@@ -111,6 +117,7 @@ where:
 Our work builds on top of amazing open-source networks and codebases. 
 We thank the authors for providing them.
 
+- [Depth Anything 3](https://github.com/ByteDance-Seed/Depth-Anything-3): a model that predicts spatially consistent geometry from arbitrary visual inputs, with or without known camera poses.
 - [Depth Anything V2](https://github.com/DepthAnything/Depth-Anything-V2): a SOTA monocular depth estimator.
 - [threestudio](https://github.com/threestudio-project/threestudio): a unified framework for 3D content creation from text prompts, single images, and few-shot images, by lifting 2D text-to-image generation models.
 - [Hugging Face](https://github.com/huggingface): a platform that provides libraries for many machine learning tasks like text generation, image generation, and many more. 

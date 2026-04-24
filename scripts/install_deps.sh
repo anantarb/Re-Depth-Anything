@@ -13,7 +13,10 @@ pip install \
     accelerate \
     opencv-python \
     bitsandbytes \
-    tqdm
+    tqdm \
+    addict \
+    einops
+
 
 
 
